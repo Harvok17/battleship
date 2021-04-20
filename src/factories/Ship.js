@@ -11,12 +11,18 @@ class Ship {
   }
 
   isSunk() {
-    if (this.locations.length === this.hits.length) {
+    if (this.checkHit()) {
       return true;
     } else {
       return false;
     }
   }
+
+  checkHit() {
+    return this.locations.every((loc) => this.hits.includes(loc));
+  }
 }
 
 export default Ship;
+
+// this.locations.length === this.hits.length &&

@@ -43,7 +43,7 @@ function Test(props) {
     const gameBoard = props.players.human.gameBoard;
     const locations = gameBoard.manualLocations(coord, ship, direction);
 
-    if (gameBoard.outOfBounds(locations) && gameBoard.collision(locations))
+    if (gameBoard.outOfBounds(locations) || gameBoard.collision(locations))
       return;
 
     props.placeShip({ coord, ship, direction });
@@ -69,29 +69,35 @@ function Test(props) {
     setHovered([]);
   };
 
-  const renderPlayerCells = (start, end, player) => {
+  const renderPlayerSquares = (start, end, player) => {
     return (
       <tr>
-        {player.gameBoard.board.slice(start, end).map((cell) => (
+        {player.gameBoard.board.slice(start, end).map((square) => (
           <td
             style={
-              cell.occupied
+              square.occupied
                 ? { backgroundColor: "darkblue" }
                 : { backgroundColor: "none" }
             }
-            className={`${cell.shipPart} ${
-              hovered.includes(cell.coord) ? "cell-hover" : "not-allowed"
+            className={`${square.shipPart || ""}${
+              hovered.includes(square.coord)
+                ? "square-hover"
+                : gameStart
+                ? ""
+                : "not-allowed"
             }`}
-            key={cell.coord}
+            key={square.coord}
             onClick={() => {
-              handlePlaceShip(cell.coord, shipTypes[count], direction);
+              handlePlaceShip(square.coord, shipTypes[count], direction);
             }}
-            onMouseEnter={() => handleMouseEnter(cell.coord, player.gameBoard)}
+            onMouseEnter={() =>
+              handleMouseEnter(square.coord, player.gameBoard)
+            }
             onMouseLeave={handleMouseLeave}
           >
-            {cell.occupied === true && cell.shot === true ? (
+            {square.occupied === true && square.shot === true ? (
               <span style={{ color: "green", fontWeight: "bold" }}>H</span>
-            ) : cell.occupied === false && cell.shot === true ? (
+            ) : square.occupied === false && square.shot === true ? (
               <span style={{ color: "red", fontWeight: "bold" }}>M</span>
             ) : null}
           </td>
@@ -100,22 +106,22 @@ function Test(props) {
     );
   };
 
-  const renderComputerCells = (start, end, player) => {
+  const renderComputerSquares = (start, end, player) => {
     return (
       <tr>
-        {player.gameBoard.board.slice(start, end).map((cell) => (
+        {player.gameBoard.board.slice(start, end).map((square) => (
           <td
             style={
-              cell.occupied
+              square.occupied
                 ? { backgroundColor: "darkblue" }
                 : { backgroundColor: "none" }
             }
-            className={cell.shipPart}
-            key={cell.coord}
+            className={square.shipPart}
+            key={square.coord}
           >
-            {cell.occupied === true && cell.shot === true ? (
+            {square.occupied === true && square.shot === true ? (
               <span style={{ color: "green", fontWeight: "bold" }}>H</span>
-            ) : cell.occupied === false && cell.shot === true ? (
+            ) : square.occupied === false && square.shot === true ? (
               <span style={{ color: "red", fontWeight: "bold" }}>M</span>
             ) : null}
           </td>
@@ -124,20 +130,20 @@ function Test(props) {
     );
   };
 
-  const renderTable = (cell, player) => {
+  const renderTable = (square, player) => {
     return player ? (
       <table>
         <tbody>
-          {cell(0, 10, player)}
-          {cell(10, 20, player)}
-          {cell(20, 30, player)}
-          {cell(30, 40, player)}
-          {cell(40, 50, player)}
-          {cell(50, 60, player)}
-          {cell(60, 70, player)}
-          {cell(70, 80, player)}
-          {cell(80, 90, player)}
-          {cell(90, 100, player)}
+          {square(0, 10, player)}
+          {square(10, 20, player)}
+          {square(20, 30, player)}
+          {square(30, 40, player)}
+          {square(40, 50, player)}
+          {square(50, 60, player)}
+          {square(60, 70, player)}
+          {square(70, 80, player)}
+          {square(80, 90, player)}
+          {square(90, 100, player)}
         </tbody>
       </table>
     ) : null;
@@ -150,12 +156,14 @@ function Test(props) {
       <button onClick={handleChangeDirection}>{direction}</button>
       <br />
       <br />
-      {renderTable(renderPlayerCells, props.players.human)}
+      {renderTable(renderPlayerSquares, props.players.human)}
       Human
       <br />
       <br />
       {gameStart ? (
-        <>{renderTable(renderComputerCells, props.players.computer)}Computer</>
+        <>
+          {renderTable(renderComputerSquares, props.players.computer)}Computer
+        </>
       ) : null}
     </>
   );

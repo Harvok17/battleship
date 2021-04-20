@@ -149,10 +149,11 @@ td {
   border-top: 0;
 }
 
-.cell-hover {
+.square-hover {
   background-color: grey;
 }
 
-.not-allowed {
-  cursor: not-allowed;
+.not-allowed:hover {
+  /* cursor: not-allowed; */
+  background-color: firebrick;
 }

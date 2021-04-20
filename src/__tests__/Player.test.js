@@ -1,14 +1,16 @@
 import Player from "../factories/Player";
 
 describe("Test Player functions", () => {
-  let testPlayer, testOpponent, testCell;
+  let testPlayer, testOpponent, testSquare;
 
   beforeEach(() => {
     testPlayer = new Player("human");
     testOpponent = new Player("computer");
 
-    testCell = testOpponent.gameBoard.board.find((cell) => cell.coord === 10);
-    testCell.shot = true;
+    testSquare = testOpponent.gameBoard.board.find(
+      (square) => square.coord === 10
+    );
+    testSquare.shot = true;
   });
 
   test("check if shot is valid", () => {

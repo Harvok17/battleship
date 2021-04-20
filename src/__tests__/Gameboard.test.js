@@ -7,15 +7,15 @@ describe("Test Gameboard functions", () => {
     testGameboard = new Gameboard();
   });
 
-  test("check if every cell of the board has the correct properties", () => {
+  test("check if every square of the board has the correct properties", () => {
     const arr = [];
     for (let i = 0; i < 100; i++) {
       arr.push({ occupied: false, shot: false, coord: i });
     }
 
     expect(
-      testGameboard.board.every((cell, i) => {
-        const { occupied, shot, coord } = cell;
+      testGameboard.board.every((square, i) => {
+        const { occupied, shot, coord } = square;
         const {
           occupied: testOccupied,
           shot: testShot,
@@ -72,8 +72,10 @@ describe("Test Gameboard functions", () => {
 
   test("can receive attack", () => {
     testGameboard.receiveAttack(25);
-    const testCell = testGameboard.board.find((cell) => cell.coord === 25);
-    expect(testCell.shot).toBe(true);
+    const testSquare = testGameboard.board.find(
+      (square) => square.coord === 25
+    );
+    expect(testSquare.shot).toBe(true);
   });
 
   test("check if all ships sank", () => {
