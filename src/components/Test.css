@@ -5,11 +5,11 @@ body {
 table {
   border-collapse: collapse;
   margin: auto;
-  height: 400px;
-  width: 400px;
 }
 
 td {
+  height: 35px;
+  width: 35px;
   border: 2px solid darkgrey;
   cursor: pointer;
 }
@@ -149,6 +149,8 @@ td {
   border-top: 0;
 }
 
+/*****/
+
 .square-hover {
   background-color: grey;
 }
@@ -156,4 +158,8 @@ td {
 .not-allowed:hover {
   /* cursor: not-allowed; */
   background-color: firebrick;
+}
+
+.highlight:hover {
+  background-color: lightgreen;
 }

@@ -2,6 +2,7 @@ import {
   INITIALIZE_PLAYERS,
   PLACE_SHIP,
   GENERATE_COMPUTER_SHIPS,
+  FIRE_SHOT,
 } from "../actions/types";
 
 const playersReducer = (state = {}, action) => {
@@ -13,16 +14,25 @@ const playersReducer = (state = {}, action) => {
       return { ...state, ...payload };
 
     case PLACE_SHIP:
-      const { coord, ship, direction } = payload;
       newState = { ...state };
-      const { human } = newState;
-      human.gameBoard.manualShipLocations(coord, ship, direction);
+      newState.human.gameBoard.manualShipLocations(
+        payload.coord,
+        payload.ship,
+        payload.direction
+      );
       return newState;
 
     case GENERATE_COMPUTER_SHIPS:
       newState = { ...state };
-      const { computer } = newState;
-      computer.gameBoard.generateShipLocations();
+      newState.computer.gameBoard.generateShipLocations();
+      return newState;
+
+    case FIRE_SHOT:
+      newState = { ...state };
+      newState[payload.attacker].fire(
+        payload.coord,
+        newState[payload.receiver].gameBoard
+      );
       return newState;
 
     default:

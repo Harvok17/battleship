@@ -3,11 +3,13 @@ import {
   initializePlayers,
   placeShip,
   generateComputerShips,
+  fireShot,
 } from "../actions";
 import { connect } from "react-redux";
 import { useEffect, useState } from "react";
 import "./Test.css";
 import shipTypes from "../shipTypes";
+import computerAi from "../computerAi";
 
 function Test(props) {
   const [count, setCount] = useState(0);
@@ -69,6 +71,23 @@ function Test(props) {
     setHovered([]);
   };
 
+  const handleAttack = (square) => {
+    if (square.shot) return;
+
+    props.fireShot({
+      coord: square.coord,
+      attacker: "human",
+      receiver: "computer",
+    });
+
+    const computerShot = computerAi(props.players.human.gameBoard.board);
+    props.fireShot({
+      coord: computerShot,
+      attacker: "computer",
+      receiver: "human",
+    });
+  };
+
   const renderPlayerSquares = (start, end, player) => {
     return (
       <tr>
@@ -96,9 +115,23 @@ function Test(props) {
             onMouseLeave={handleMouseLeave}
           >
             {square.occupied === true && square.shot === true ? (
-              <span style={{ color: "green", fontWeight: "bold" }}>H</span>
+              <span
+                style={{
+                  color: "green",
+                  fontWeight: "bold",
+                }}
+              >
+                H
+              </span>
             ) : square.occupied === false && square.shot === true ? (
-              <span style={{ color: "red", fontWeight: "bold" }}>M</span>
+              <span
+                style={{
+                  color: "red",
+                  fontWeight: "bold",
+                }}
+              >
+                M
+              </span>
             ) : null}
           </td>
         ))}
@@ -116,13 +149,30 @@ function Test(props) {
                 ? { backgroundColor: "darkblue" }
                 : { backgroundColor: "none" }
             }
-            className={square.shipPart}
+            className={`${square.shipPart || ""} highlight`}
             key={square.coord}
+            onClick={() => {
+              handleAttack(square);
+            }}
           >
             {square.occupied === true && square.shot === true ? (
-              <span style={{ color: "green", fontWeight: "bold" }}>H</span>
+              <span
+                style={{
+                  color: "green",
+                  fontWeight: "bold",
+                }}
+              >
+                H
+              </span>
             ) : square.occupied === false && square.shot === true ? (
-              <span style={{ color: "red", fontWeight: "bold" }}>M</span>
+              <span
+                style={{
+                  color: "red",
+                  fontWeight: "bold",
+                }}
+              >
+                M
+              </span>
             ) : null}
           </td>
         ))}
@@ -156,8 +206,13 @@ function Test(props) {
       <button onClick={handleChangeDirection}>{direction}</button>
       <br />
       <br />
-      {renderTable(renderPlayerSquares, props.players.human)}
-      Human
+      {props.players.human ? (
+        <>
+          {renderTable(renderPlayerSquares, props.players.human)}
+          Human
+        </>
+      ) : null}
+
       <br />
       <br />
       {gameStart ? (
@@ -179,4 +234,5 @@ export default connect(mapStateToProps, {
   initializePlayers,
   placeShip,
   generateComputerShips,
+  fireShot,
 })(Test);
