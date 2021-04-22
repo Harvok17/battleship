@@ -163,3 +163,7 @@ td {
 .highlight:hover {
   background-color: lightgreen;
 }
+
+.sunk {
+  background-color: black !important;
+}

@@ -15,7 +15,7 @@ const playersReducer = (state = {}, action) => {
 
     case PLACE_SHIP:
       newState = { ...state };
-      newState.human.gameBoard.manualShipLocations(
+      newState.player1.gameBoard.manualShipLocations(
         payload.coord,
         payload.ship,
         payload.direction
@@ -24,7 +24,7 @@ const playersReducer = (state = {}, action) => {
 
     case GENERATE_COMPUTER_SHIPS:
       newState = { ...state };
-      newState.computer.gameBoard.generateShipLocations();
+      newState.player2.gameBoard.generateShipLocations();
       return newState;
 
     case FIRE_SHOT:

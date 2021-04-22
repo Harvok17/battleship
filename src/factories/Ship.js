@@ -24,5 +24,3 @@ class Ship {
 }
 
 export default Ship;
-
-// this.locations.length === this.hits.length &&

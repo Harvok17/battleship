@@ -101,6 +101,12 @@ describe("Test Gameboard functions", () => {
       testGameboard.receiveAttack(27 + i * 10);
     }
 
+    // const testShip = testGameboard.ships.find((ship) =>
+    //   ship.locations.includes(70)
+    // );
+
+    // console.log(testShip);
+
     expect(testGameboard.checkAllShipsSank()).toBe(true);
   });
 });

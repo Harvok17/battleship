@@ -23,12 +23,12 @@ function Test(props) {
 
   ///////FUNCTIONS//////
   const handleCreatePlayers = () => {
-    if (props.players.human && props.players.computer) return;
+    if (props.players.player1 && props.players.player2) return;
 
     const human = new Player("human");
     const computer = new Player("computer");
 
-    props.initializePlayers({ human, computer });
+    props.initializePlayers({ player1: human, player2: computer });
     props.generateComputerShips();
   };
 
@@ -42,7 +42,7 @@ function Test(props) {
 
   const handlePlaceShip = (coord, ship, direction) => {
     if (count > 4) return;
-    const gameBoard = props.players.human.gameBoard;
+    const gameBoard = props.players.player1.gameBoard;
     const locations = gameBoard.manualLocations(coord, ship, direction);
 
     if (gameBoard.outOfBounds(locations) || gameBoard.collision(locations))
@@ -76,15 +76,15 @@ function Test(props) {
 
     props.fireShot({
       coord: square.coord,
-      attacker: "human",
-      receiver: "computer",
+      attacker: "player1",
+      receiver: "player2",
     });
 
-    const computerShot = computerAi(props.players.human.gameBoard.board);
+    const computerShot = computerAi(props.players.player1.gameBoard.board);
     props.fireShot({
       coord: computerShot,
-      attacker: "computer",
-      receiver: "human",
+      attacker: "player2",
+      receiver: "player1",
     });
   };
 
@@ -98,13 +98,13 @@ function Test(props) {
                 ? { backgroundColor: "darkblue" }
                 : { backgroundColor: "none" }
             }
-            className={`${square.shipPart || ""}${
+            className={`${square.shipPart || ""} ${
               hovered.includes(square.coord)
                 ? "square-hover"
                 : gameStart
                 ? ""
                 : "not-allowed"
-            }`}
+            } ${square.isSunk ? "sunk" : ""}`}
             key={square.coord}
             onClick={() => {
               handlePlaceShip(square.coord, shipTypes[count], direction);
@@ -144,12 +144,9 @@ function Test(props) {
       <tr>
         {player.gameBoard.board.slice(start, end).map((square) => (
           <td
-            style={
-              square.occupied
-                ? { backgroundColor: "darkblue" }
-                : { backgroundColor: "none" }
-            }
-            className={`${square.shipPart || ""} highlight`}
+            className={`${
+              square.isSunk ? (square.shipPart || "") + " sunk" : ""
+            } highlight`}
             key={square.coord}
             onClick={() => {
               handleAttack(square);
@@ -206,10 +203,10 @@ function Test(props) {
       <button onClick={handleChangeDirection}>{direction}</button>
       <br />
       <br />
-      {props.players.human ? (
+      {props.players.player1 ? (
         <>
-          {renderTable(renderPlayerSquares, props.players.human)}
-          Human
+          {renderTable(renderPlayerSquares, props.players.player1)}
+          {props.players.player1.name}
         </>
       ) : null}
 
@@ -217,7 +214,8 @@ function Test(props) {
       <br />
       {gameStart ? (
         <>
-          {renderTable(renderComputerSquares, props.players.computer)}Computer
+          {renderTable(renderComputerSquares, props.players.player2)}
+          {props.players.player2.name}
         </>
       ) : null}
     </>

@@ -24,14 +24,15 @@ class Gameboard {
   }
 
   receiveAttack(coord) {
-    const currentCell = this.board.find((cell) => cell.coord === coord);
+    const currentSquare = this.board.find((square) => square.coord === coord);
 
     this.ships.forEach((ship) => {
       if (ship.locations.includes(coord)) {
-        currentCell.shot = true;
+        currentSquare.shot = true;
         ship.hit(coord);
+        if (ship.isSunk()) this.setShipSankOnBoard(ship);
       } else {
-        currentCell.shot = true;
+        currentSquare.shot = true;
       }
     });
   }
@@ -153,17 +154,26 @@ class Gameboard {
 
   addShipLocationsOnBoard(locations, shipType, direction) {
     locations.forEach((loc, i, array) => {
-      const currentCell = this.board.find((cell) => cell.coord === loc);
+      const currentSquare = this.board.find((square) => square.coord === loc);
 
       if (i === 0) {
-        currentCell.shipPart = `${shipType}-start-${direction}`;
+        currentSquare.shipPart = `${shipType}-start-${direction}`;
       } else if (i === array.length - 1) {
-        currentCell.shipPart = `${shipType}-end-${direction}`;
+        currentSquare.shipPart = `${shipType}-end-${direction}`;
       } else {
-        currentCell.shipPart = `${shipType}-body-${direction}`;
+        currentSquare.shipPart = `${shipType}-body-${direction}`;
       }
 
-      currentCell.occupied = true;
+      currentSquare.occupied = true;
+      currentSquare.isSunk = false;
+    });
+  }
+
+  setShipSankOnBoard(ship) {
+    ship.locations.forEach((loc) => {
+      const currentSquare = this.board.find((square) => square.coord === loc);
+
+      currentSquare.isSunk = true;
     });
   }
 
