@@ -10,7 +10,7 @@ table {
 td {
   height: 35px;
   width: 35px;
-  border: 2px solid darkgrey;
+  border: 2px solid grey;
   cursor: pointer;
 }
 
@@ -156,7 +156,7 @@ td {
 }
 
 .not-allowed:hover {
-  /* cursor: not-allowed; */
+  cursor: not-allowed;
   background-color: firebrick;
 }
 
@@ -165,5 +165,5 @@ td {
 }
 
 .sunk {
-  background-color: black !important;
+  background-color: lightgrey !important;
 }

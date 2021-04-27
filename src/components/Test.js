@@ -9,13 +9,16 @@ import { connect } from "react-redux";
 import { useEffect, useState } from "react";
 import "./Test.css";
 import shipTypes from "../shipTypes";
-import computerAi from "../computerAi";
+// import computerAi from "../computerAi";
+import TestAI from "../testAi";
 
 function Test(props) {
   const [count, setCount] = useState(0);
   const [direction, setDirection] = useState("horizontal");
   const [hovered, setHovered] = useState([]);
   const [gameStart, setGameStart] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
+  const [turn, setTurn] = useState(0);
 
   useEffect(() => {
     if (count > 4) setGameStart(true);
@@ -72,7 +75,9 @@ function Test(props) {
   };
 
   const handleAttack = (square) => {
-    if (square.shot) return;
+    const { player1, player2 } = props.players;
+
+    if (square.shot || gameOver || turn === 1) return;
 
     props.fireShot({
       coord: square.coord,
@@ -80,12 +85,39 @@ function Test(props) {
       receiver: "player2",
     });
 
-    const computerShot = computerAi(props.players.player1.gameBoard.board);
+    if (player2.gameBoard.checkAllShipsSank()) {
+      setGameOver(true);
+      setTimeout(() => {
+        alert(`Winner: ${player1.name}`);
+      }, 500);
+    } else if (!square.occupied && !turn) {
+      setTurn(1);
+      computerMove(player1, player2);
+    }
+  };
+
+  const computerMove = (p1, p2) => {
+    // const computerShot = computerAi(p1.gameBoard);
+    const computerShot = TestAI.move(p1.gameBoard);
+
     props.fireShot({
       coord: computerShot,
       attacker: "player2",
       receiver: "player1",
     });
+
+    if (p1.gameBoard.checkAllShipsSank()) {
+      setGameOver(true);
+      setTimeout(() => {
+        alert(`Winner: ${p2.name}`);
+      }, 500);
+    } else if (p1.gameBoard.board[computerShot].occupied && !gameOver) {
+      setTimeout(() => {
+        computerMove(p1, p2);
+      }, 2000);
+    } else {
+      setTurn(0);
+    }
   };
 
   const renderPlayerSquares = (start, end, player) => {
@@ -117,20 +149,18 @@ function Test(props) {
             {square.occupied === true && square.shot === true ? (
               <span
                 style={{
-                  color: "green",
-                  fontWeight: "bold",
+                  color: "red",
                 }}
               >
-                H
+                {"\u2716"}
               </span>
             ) : square.occupied === false && square.shot === true ? (
               <span
                 style={{
-                  color: "red",
-                  fontWeight: "bold",
+                  color: "darkgrey",
                 }}
               >
-                M
+                {"\u2716"}
               </span>
             ) : null}
           </td>
@@ -155,20 +185,18 @@ function Test(props) {
             {square.occupied === true && square.shot === true ? (
               <span
                 style={{
-                  color: "green",
-                  fontWeight: "bold",
+                  color: "red",
                 }}
               >
-                H
+                {"\u2716"}
               </span>
             ) : square.occupied === false && square.shot === true ? (
               <span
                 style={{
-                  color: "red",
-                  fontWeight: "bold",
+                  color: "darkgrey",
                 }}
               >
-                M
+                {"\u2716"}
               </span>
             ) : null}
           </td>
@@ -206,7 +234,7 @@ function Test(props) {
       {props.players.player1 ? (
         <>
           {renderTable(renderPlayerSquares, props.players.player1)}
-          {props.players.player1.name}
+          Player 1
         </>
       ) : null}
 
@@ -215,7 +243,7 @@ function Test(props) {
       {gameStart ? (
         <>
           {renderTable(renderComputerSquares, props.players.player2)}
-          {props.players.player2.name}
+          Player 2
         </>
       ) : null}
     </>

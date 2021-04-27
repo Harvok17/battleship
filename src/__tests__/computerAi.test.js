@@ -17,7 +17,7 @@ describe("Test computer AI", () => {
   });
 
   test("test valid squares", () => {
-    const computerShot = computerAi(testPlayer.gameBoard.board);
+    const computerShot = computerAi(testPlayer.gameBoard);
     expect(testOpponent.fire(computerShot, testPlayer.gameBoard)).toBe(true);
   });
 });
