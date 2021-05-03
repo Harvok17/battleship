@@ -4,13 +4,15 @@ import {
   placeShip,
   generateComputerShips,
   fireShot,
+  reset,
 } from "../actions";
 import { connect } from "react-redux";
 import { useEffect, useState } from "react";
 import "./Test.css";
 import shipTypes from "../shipTypes";
-// import computerAi from "../computerAi";
-import TestAI from "../testAi";
+import ComputerAI from "../ComputerAI";
+
+let computerAI = new ComputerAI();
 
 function Test(props) {
   const [count, setCount] = useState(0);
@@ -23,6 +25,12 @@ function Test(props) {
   useEffect(() => {
     if (count > 4) setGameStart(true);
   }, [count]);
+
+  useEffect(() => {
+    if (gameStart) {
+      setHovered([]);
+    }
+  }, [gameStart]);
 
   ///////FUNCTIONS//////
   const handleCreatePlayers = () => {
@@ -97,8 +105,7 @@ function Test(props) {
   };
 
   const computerMove = (p1, p2) => {
-    // const computerShot = computerAi(p1.gameBoard);
-    const computerShot = TestAI.move(p1.gameBoard);
+    const computerShot = computerAI.move(p1.gameBoard);
 
     props.fireShot({
       coord: computerShot,
@@ -114,10 +121,19 @@ function Test(props) {
     } else if (p1.gameBoard.board[computerShot].occupied && !gameOver) {
       setTimeout(() => {
         computerMove(p1, p2);
-      }, 2000);
+      }, 1000);
     } else {
       setTurn(0);
     }
+  };
+
+  const handleReset = () => {
+    props.reset();
+    setCount(0);
+    setTurn(0);
+    setGameOver(false);
+    setGameStart(false);
+    computerAI = new ComputerAI();
   };
 
   const renderPlayerSquares = (start, end, player) => {
@@ -152,7 +168,7 @@ function Test(props) {
                   color: "red",
                 }}
               >
-                {"\u2716"}
+                {"\u274C"}
               </span>
             ) : square.occupied === false && square.shot === true ? (
               <span
@@ -160,7 +176,7 @@ function Test(props) {
                   color: "darkgrey",
                 }}
               >
-                {"\u2716"}
+                {"\u2715"}
               </span>
             ) : null}
           </td>
@@ -188,7 +204,7 @@ function Test(props) {
                   color: "red",
                 }}
               >
-                {"\u2716"}
+                {"\u274C"}
               </span>
             ) : square.occupied === false && square.shot === true ? (
               <span
@@ -196,7 +212,7 @@ function Test(props) {
                   color: "darkgrey",
                 }}
               >
-                {"\u2716"}
+                {"\u2715"}
               </span>
             ) : null}
           </td>
@@ -229,6 +245,7 @@ function Test(props) {
     <>
       <button onClick={handleCreatePlayers}>Create Players</button>
       <button onClick={handleChangeDirection}>{direction}</button>
+      {gameOver ? <button onClick={handleReset}>Reset</button> : null}
       <br />
       <br />
       {props.players.player1 ? (
@@ -261,4 +278,5 @@ export default connect(mapStateToProps, {
   placeShip,
   generateComputerShips,
   fireShot,
+  reset,
 })(Test);

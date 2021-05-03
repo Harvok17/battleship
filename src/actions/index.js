@@ -3,6 +3,7 @@ import {
   PLACE_SHIP,
   GENERATE_COMPUTER_SHIPS,
   FIRE_SHOT,
+  RESET,
 } from "./types";
 
 export const initializePlayers = (players) => {
@@ -29,5 +30,11 @@ export const fireShot = ({ coord, attacker, receiver }) => {
   return {
     type: FIRE_SHOT,
     payload: { coord, attacker, receiver },
+  };
+};
+
+export const reset = () => {
+  return {
+    type: RESET,
   };
 };
