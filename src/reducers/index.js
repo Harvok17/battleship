@@ -1,9 +1,15 @@
 import { combineReducers } from "redux";
-import playersReducer from "./playersReducer";
 import { RESET } from "../actions/types";
+import playersReducer from "./playersReducer";
+import resultReducer from "./resultReducer";
+import screenReducer from "./screenReducer";
+import turnReducer from "./turnReducer";
 
 const appReducer = combineReducers({
   players: playersReducer,
+  screen: screenReducer,
+  turn: turnReducer,
+  winner: resultReducer,
 });
 
 const rootReducer = (state, action) => {

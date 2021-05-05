@@ -5,6 +5,11 @@ import {
   generateComputerShips,
   fireShot,
   reset,
+  setup,
+  gameStart,
+  showResult,
+  setTurn,
+  declareWinner,
 } from "../actions";
 import { connect } from "react-redux";
 import { useEffect, useState } from "react";
@@ -18,29 +23,42 @@ function Test(props) {
   const [count, setCount] = useState(0);
   const [direction, setDirection] = useState("horizontal");
   const [hovered, setHovered] = useState([]);
-  const [gameStart, setGameStart] = useState(false);
-  const [gameOver, setGameOver] = useState(false);
-  const [turn, setTurn] = useState(0);
+  const {
+    setup,
+    gameStart,
+    showResult,
+    screen,
+    setTurn,
+    turn,
+    reset,
+    declareWinner,
+    winner,
+  } = props;
 
   useEffect(() => {
-    if (count > 4) setGameStart(true);
-  }, [count]);
+    if (count > 4) {
+      gameStart();
+    }
+  }, [count, gameStart]);
 
   useEffect(() => {
-    if (gameStart) {
+    if (screen === "game") {
+      console.log("GAME STARTS!");
       setHovered([]);
     }
-  }, [gameStart]);
+  }, [screen]);
 
   ///////FUNCTIONS//////
+
   const handleCreatePlayers = () => {
     if (props.players.player1 && props.players.player2) return;
 
-    const human = new Player("human");
-    const computer = new Player("computer");
+    const human = new Player("Human");
+    const computer = new Player("Computer");
 
     props.initializePlayers({ player1: human, player2: computer });
     props.generateComputerShips();
+    setup();
   };
 
   const handleChangeDirection = () => {
@@ -64,7 +82,7 @@ function Test(props) {
   };
 
   const handleMouseEnter = (coord, gameBoard) => {
-    if (gameStart) return;
+    if (screen === "game" || screen === "result") return;
     const shipLength = shipTypes[count].length;
     const locations = [];
     for (let i = 0; i < shipLength; i++) {
@@ -85,7 +103,7 @@ function Test(props) {
   const handleAttack = (square) => {
     const { player1, player2 } = props.players;
 
-    if (square.shot || gameOver || turn === 1) return;
+    if (square.shot || screen === "result" || turn === 1) return;
 
     props.fireShot({
       coord: square.coord,
@@ -94,10 +112,8 @@ function Test(props) {
     });
 
     if (player2.gameBoard.checkAllShipsSank()) {
-      setGameOver(true);
-      setTimeout(() => {
-        alert(`Winner: ${player1.name}`);
-      }, 500);
+      showResult();
+      declareWinner(player1.name);
     } else if (!square.occupied && !turn) {
       setTurn(1);
       computerMove(player1, player2);
@@ -114,11 +130,9 @@ function Test(props) {
     });
 
     if (p1.gameBoard.checkAllShipsSank()) {
-      setGameOver(true);
-      setTimeout(() => {
-        alert(`Winner: ${p2.name}`);
-      }, 500);
-    } else if (p1.gameBoard.board[computerShot].occupied && !gameOver) {
+      showResult();
+      declareWinner(p2.name);
+    } else if (p1.gameBoard.board[computerShot].occupied && screen === "game") {
       setTimeout(() => {
         computerMove(p1, p2);
       }, 1000);
@@ -128,11 +142,9 @@ function Test(props) {
   };
 
   const handleReset = () => {
-    props.reset();
+    reset();
     setCount(0);
-    setTurn(0);
-    setGameOver(false);
-    setGameStart(false);
+    setDirection("horizontal");
     computerAI = new ComputerAI();
   };
 
@@ -143,13 +155,13 @@ function Test(props) {
           <td
             style={
               square.occupied
-                ? { backgroundColor: "darkblue" }
+                ? { backgroundColor: "royalblue" }
                 : { backgroundColor: "none" }
             }
             className={`${square.shipPart || ""} ${
               hovered.includes(square.coord)
                 ? "square-hover"
-                : gameStart
+                : screen === "game" || screen === "result"
                 ? ""
                 : "not-allowed"
             } ${square.isSunk ? "sunk" : ""}`}
@@ -245,9 +257,12 @@ function Test(props) {
     <>
       <button onClick={handleCreatePlayers}>Create Players</button>
       <button onClick={handleChangeDirection}>{direction}</button>
-      {gameOver ? <button onClick={handleReset}>Reset</button> : null}
+      {screen === "result" ? (
+        <button onClick={handleReset}>Reset</button>
+      ) : null}
       <br />
       <br />
+      {screen === "result" ? <h1>Winner is: {winner}</h1> : null}
       {props.players.player1 ? (
         <>
           {renderTable(renderPlayerSquares, props.players.player1)}
@@ -257,7 +272,7 @@ function Test(props) {
 
       <br />
       <br />
-      {gameStart ? (
+      {screen === "game" || screen === "result" ? (
         <>
           {renderTable(renderComputerSquares, props.players.player2)}
           Player 2
@@ -270,6 +285,9 @@ function Test(props) {
 const mapStateToProps = (state) => {
   return {
     players: state.players,
+    screen: state.screen,
+    turn: state.turn,
+    winner: state.winner,
   };
 };
 
@@ -279,4 +297,9 @@ export default connect(mapStateToProps, {
   generateComputerShips,
   fireShot,
   reset,
+  setup,
+  gameStart,
+  showResult,
+  setTurn,
+  declareWinner,
 })(Test);

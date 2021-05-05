@@ -4,6 +4,11 @@ import {
   GENERATE_COMPUTER_SHIPS,
   FIRE_SHOT,
   RESET,
+  SETUP,
+  GAME,
+  RESULT,
+  TURN,
+  WINNER,
 } from "./types";
 
 export const initializePlayers = (players) => {
@@ -36,5 +41,37 @@ export const fireShot = ({ coord, attacker, receiver }) => {
 export const reset = () => {
   return {
     type: RESET,
+  };
+};
+
+export const setup = () => {
+  return {
+    type: SETUP,
+  };
+};
+
+export const gameStart = () => {
+  return {
+    type: GAME,
+  };
+};
+
+export const showResult = () => {
+  return {
+    type: RESULT,
+  };
+};
+
+export const setTurn = (turn) => {
+  return {
+    type: TURN,
+    payload: turn,
+  };
+};
+
+export const declareWinner = (winner) => {
+  return {
+    type: WINNER,
+    payload: winner,
   };
 };
