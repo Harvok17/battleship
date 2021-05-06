@@ -6,6 +6,7 @@ class Gameboard {
     this.boardSize = 10;
     this.board = [];
     this.ships = [];
+    this.shipsLeft = shipTypes.length;
     this.init();
   }
 
@@ -30,7 +31,10 @@ class Gameboard {
       if (ship.locations.includes(coord)) {
         currentSquare.shot = true;
         ship.hit(coord);
-        if (ship.isSunk()) this.setShipSankOnBoard(ship);
+        if (ship.isSunk()) {
+          this.setShipSankOnBoard(ship);
+          this.shipsLeft--;
+        }
       } else {
         currentSquare.shot = true;
       }
@@ -38,15 +42,6 @@ class Gameboard {
   }
 
   generateShipLocations() {
-    // let locations;
-    // this.ships.forEach((ship) => {
-    //   do {
-    //     locations = this.generateLocations(ship);
-    //   } while (this.collision(locations));
-    //   ship.locations = locations;
-    //   this.addShipLocationsOnBoard(locations);
-    // });
-
     this.ships.forEach((ship) => {
       let generated;
       do {
@@ -62,26 +57,6 @@ class Gameboard {
   }
 
   generateLocations(ship) {
-    // const direction = Math.floor(Math.random() * 2);
-    // let row, col;
-
-    // if (direction === 1) {
-    //   row = Math.floor(Math.random() * this.boardSize);
-    //   col = Math.floor(Math.random() * (this.boardSize - ship.length));
-    // } else {
-    //   row = Math.floor(Math.random() * (this.boardSize - ship.length));
-    //   col = Math.floor(Math.random() * this.boardSize);
-    // }
-
-    // const shipLocationArray = [];
-    // for (let i = 0; i < ship.length; i++) {
-    //   direction === 1
-    //     ? shipLocationArray.push(row * 10 + (col + i))
-    //     : shipLocationArray.push((row + i) * 10 + col);
-    // }
-
-    // return shipLocationArray;
-
     const direction = Math.floor(Math.random() * 2);
     let row, col;
 

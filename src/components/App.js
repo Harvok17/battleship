@@ -10,3 +10,13 @@ const App = () => {
 };
 
 export default App;
+
+/*
+<Container>
+  <Header>
+  <GameWindow>
+  <Footer>
+</Container>
+
+
+*/

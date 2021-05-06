@@ -263,19 +263,23 @@ function Test(props) {
       <br />
       <br />
       {screen === "result" ? <h1>Winner is: {winner}</h1> : null}
-      {props.players.player1 ? (
+      {props.players.player1 && screen !== "result" ? (
         <>
           {renderTable(renderPlayerSquares, props.players.player1)}
           Player 1
+          <br />
+          Ships Left: {props.players.player1.gameBoard.shipsLeft}
         </>
       ) : null}
 
       <br />
       <br />
-      {screen === "game" || screen === "result" ? (
+      {screen === "game" ? (
         <>
           {renderTable(renderComputerSquares, props.players.player2)}
           Player 2
+          <br />
+          Ships Left: {props.players.player2.gameBoard.shipsLeft}
         </>
       ) : null}
     </>
