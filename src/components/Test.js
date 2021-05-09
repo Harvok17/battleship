@@ -16,8 +16,10 @@ import { useEffect, useState } from "react";
 import "./Test.css";
 import shipTypes from "../shipTypes";
 import ComputerAI from "../ComputerAI";
+import { testMove, testReset } from "../TestAI";
+import { AiMove, AiReset } from "../TestAI2";
 
-let computerAI = new ComputerAI();
+// let computerAI = new ComputerAI();
 
 function Test(props) {
   const [count, setCount] = useState(0);
@@ -121,7 +123,9 @@ function Test(props) {
   };
 
   const computerMove = (p1, p2) => {
-    const computerShot = computerAI.move(p1.gameBoard);
+    // const computerShot = computerAI.move(p1.gameBoard);
+    // const computerShot = testMove(p1.gameBoard);
+    const computerShot = AiMove(p1.gameBoard);
 
     props.fireShot({
       coord: computerShot,
@@ -145,7 +149,9 @@ function Test(props) {
     reset();
     setCount(0);
     setDirection("horizontal");
-    computerAI = new ComputerAI();
+    // computerAI = new ComputerAI();
+    // testReset();
+    AiReset();
   };
 
   const renderPlayerSquares = (start, end, player) => {
