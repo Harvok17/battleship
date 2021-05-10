@@ -3,11 +3,13 @@ const state = {
   selectedSquare: null,
   startingSquare: null,
   direction: null,
-  adjacentSquares: [],
   validSquares: [],
   filteredDirections: [],
   directions: [+1, -1, +10, -10],
 };
+
+const leftEdge = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90];
+const rightEdge = [9, 19, 29, 39, 49, 59, 69, 79, 89];
 
 const makeRandomMove = () => {
   return state.validSquares[
@@ -19,20 +21,30 @@ const createFilteredDirections = () => {
   const validCoords = state.validSquares.map((square) => square.coord);
 
   state.filteredDirections = state.directions.filter((dir) => {
+    let diffRowSquare;
     const currentSquare = dir + state.randomSquare.coord;
 
-    return validCoords.includes(currentSquare);
+    if (
+      (leftEdge.includes(state.randomSquare.coord) &&
+        rightEdge.includes(currentSquare)) ||
+      (rightEdge.includes(state.randomSquare.coord) &&
+        leftEdge.includes(currentSquare))
+    ) {
+      diffRowSquare = currentSquare;
+    }
+
+    return (
+      validCoords.includes(currentSquare) && currentSquare !== diffRowSquare
+    );
   });
 };
 
 const setRandomSquare = () => {
   state.randomSquare = makeRandomMove();
-
   if (state.randomSquare.occupied) {
     state.startingSquare = state.randomSquare.coord;
     createFilteredDirections();
   }
-
   return state.randomSquare.coord;
 };
 
@@ -58,12 +70,27 @@ const checkShipSank = (GameBoard) => {
   return ship.isSunk();
 };
 
+const resetMove = (GameBoard) => {
+  AiReset();
+  createValidSquares(GameBoard);
+  return setRandomSquare();
+};
+
+const reverse = () => {
+  state.direction = oppositeDirection(state.direction);
+
+  const selectedCoord = state.startingSquare + state.direction;
+
+  state.selectedSquare = state.validSquares.find(
+    (square) => square.coord === selectedCoord
+  );
+};
+
 export const AiReset = () => {
   state.randomSquare = null;
   state.selectedSquare = null;
   state.startingSquare = null;
   state.direction = null;
-  state.adjacentSquares = [];
   state.validSquares = [];
   state.filteredDirections = [];
   state.directions = [+1, -1, +10, -10];
@@ -79,19 +106,16 @@ export const AiMove = (playerGameBoard) => {
       setDirection();
 
       const selectedCoord = state.randomSquare.coord + state.direction;
-
       const selectedSquare = state.validSquares.find(
         (square) => square.coord === selectedCoord
       );
 
-      if (selectedSquare.occupied) {
-        state.selectedSquare = selectedSquare;
+      if (!selectedSquare) {
+        return resetMove(playerGameBoard);
       }
 
-      if (!selectedSquare) {
-        AiReset();
-        createValidSquares(playerGameBoard);
-        return setRandomSquare();
+      if (selectedSquare.occupied) {
+        state.selectedSquare = selectedSquare;
       }
 
       return selectedSquare.coord;
@@ -99,51 +123,56 @@ export const AiMove = (playerGameBoard) => {
 
     return setRandomSquare();
   } else if (state.selectedSquare.occupied) {
+    console.log(state.selectedSquare);
     if (checkShipSank(playerGameBoard)) {
-      AiReset();
-      createValidSquares(playerGameBoard);
-      return setRandomSquare();
+      return resetMove(playerGameBoard);
     }
 
     let selectedCoord;
-    selectedCoord = state.selectedSquare.coord + state.direction;
+    if (
+      (leftEdge.includes(state.selectedSquare.coord) &&
+        (state.direction === 1 || state.direction === -1)) ||
+      (rightEdge.includes(state.selectedSquare.coord) &&
+        (state.direction === 1 || state.direction === -1))
+    ) {
+      state.direction = oppositeDirection(state.direction);
+      selectedCoord = state.startingSquare + state.direction;
+
+      state.selectedSquare = state.validSquares.find(
+        (square) => square.coord === selectedCoord
+      );
+    } else {
+      selectedCoord = state.selectedSquare.coord + state.direction;
+
+      state.selectedSquare = state.validSquares.find(
+        (square) => square.coord === selectedCoord
+      );
+    }
 
     state.selectedSquare = state.validSquares.find(
       (square) => square.coord === selectedCoord
     );
 
     if (!state.selectedSquare && !checkShipSank(playerGameBoard)) {
-      state.direction = oppositeDirection(state.direction);
+      reverse();
 
-      selectedCoord = state.startingSquare + state.direction;
-
-      state.selectedSquare = state.validSquares.find(
-        (square) => square.coord === selectedCoord
-      );
+      if (!state.selectedSquare) {
+        return resetMove(playerGameBoard);
+      }
 
       return state.selectedSquare.coord;
     }
 
     if (!state.selectedSquare) {
-      AiReset();
-      createValidSquares(playerGameBoard);
-      return setRandomSquare();
+      return resetMove(playerGameBoard);
     }
 
     return state.selectedSquare.coord;
   } else if (!state.selectedSquare.occupied) {
-    state.direction = oppositeDirection(state.direction);
-
-    const selectedCoord = state.startingSquare + state.direction;
-
-    state.selectedSquare = state.validSquares.find(
-      (square) => square.coord === selectedCoord
-    );
+    reverse();
 
     if (!state.selectedSquare) {
-      AiReset();
-      createValidSquares(playerGameBoard);
-      return setRandomSquare();
+      return resetMove(playerGameBoard);
     }
 
     return state.selectedSquare.coord;

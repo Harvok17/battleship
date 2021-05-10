@@ -6,6 +6,9 @@ class Gameboard {
     this.boardSize = 10;
     this.board = [];
     this.ships = [];
+    this._adjcentSquares = [];
+    this.leftEdge = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90];
+    this.rightEdge = [9, 19, 29, 39, 49, 59, 69, 79, 89];
     this.shipsLeft = shipTypes.length;
     this.init();
   }
@@ -53,6 +56,8 @@ class Gameboard {
         ship.type,
         generated.direction
       );
+      ///////////////////
+      this._addAdjacentSquares(generated.locations, generated.direction);
     });
   }
 
@@ -82,12 +87,11 @@ class Gameboard {
   }
 
   outOfBounds(locations) {
-    const edge = [9, 19, 29, 39, 49, 59, 69, 79, 89];
     if (locations.some((loc) => !this.board[loc])) {
       return true;
     }
     if (
-      edge.some((num) => {
+      this.rightEdge.some((num) => {
         return [num, num + 1].every((combination) =>
           locations.includes(combination)
         );
@@ -100,8 +104,12 @@ class Gameboard {
   }
 
   collision(locations) {
+    // return locations.some((loc) => {
+    //   return this.ships.some((ship) => ship.locations.includes(loc));
+    // });
+
     return locations.some((loc) => {
-      return this.ships.some((ship) => ship.locations.includes(loc));
+      return this._adjcentSquares.includes(loc);
     });
   }
 
@@ -110,6 +118,8 @@ class Gameboard {
 
     this.addShipLocations(locations, ship.type);
     this.addShipLocationsOnBoard(locations, ship.type, direction);
+    //////////////
+    this._addAdjacentSquares(locations, direction);
   }
 
   manualLocations(coord, ship, direction) {
@@ -156,6 +166,38 @@ class Gameboard {
     return this.ships.every((ship) => {
       return ship.isSunk();
     });
+  }
+
+  _addAdjacentSquares(locations, direction) {
+    const start = locations[0];
+    const end = locations[locations.length - 1];
+
+    if (direction === "horizontal") {
+      const shipRow = this.leftEdge.includes(start)
+        ? [...locations, end + 1]
+        : this.rightEdge.includes(end)
+        ? [start - 1, ...locations]
+        : [start - 1, ...locations, end + 1];
+
+      const upperRow = shipRow.map((loc) => loc - 10);
+      const lowerRow = shipRow.map((loc) => loc + 10);
+
+      const allRows = shipRow.concat(upperRow).concat(lowerRow);
+
+      this._adjcentSquares = this._adjcentSquares.concat(allRows);
+    }
+
+    if (direction === "vertical") {
+      const shipColumn = [start - 10, ...locations, end + 10];
+      const leftColumn = this.leftEdge.includes(start)
+        ? []
+        : shipColumn.map((loc) => loc - 1);
+      const rightColumn = this.rightEdge.includes(start)
+        ? []
+        : shipColumn.map((loc) => loc + 1);
+      const allColumns = shipColumn.concat(leftColumn).concat(rightColumn);
+      this._adjcentSquares = this._adjcentSquares.concat(allColumns);
+    }
   }
 }
 
