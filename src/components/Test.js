@@ -15,11 +15,8 @@ import { connect } from "react-redux";
 import { useEffect, useState } from "react";
 import "./Test.css";
 import shipTypes from "../shipTypes";
-import ComputerAI from "../ComputerAI";
-import { testMove, testReset } from "../TestAI";
-import { AiMove, AiReset } from "../TestAI2";
-
-// let computerAI = new ComputerAI();
+import { AiMove, AiReset } from "../ComputerAI";
+import {ScreenWrapper} from './styled-components/appComponentStyles'
 
 function Test(props) {
   const [count, setCount] = useState(0);
@@ -123,8 +120,6 @@ function Test(props) {
   };
 
   const computerMove = (p1, p2) => {
-    // const computerShot = computerAI.move(p1.gameBoard);
-    // const computerShot = testMove(p1.gameBoard);
     const computerShot = AiMove(p1.gameBoard);
 
     props.fireShot({
@@ -149,8 +144,6 @@ function Test(props) {
     reset();
     setCount(0);
     setDirection("horizontal");
-    // computerAI = new ComputerAI();
-    // testReset();
     AiReset();
   };
 
@@ -260,7 +253,7 @@ function Test(props) {
 
   ///////RENDER////////////////
   return (
-    <>
+    <ScreenWrapper>
       <button onClick={handleCreatePlayers}>Create Players</button>
       <button onClick={handleChangeDirection}>{direction}</button>
       {screen === "result" ? (
@@ -288,7 +281,7 @@ function Test(props) {
           Ships Left: {props.players.player2.gameBoard.shipsLeft}
         </>
       ) : null}
-    </>
+    </ScreenWrapper>
   );
 }
 

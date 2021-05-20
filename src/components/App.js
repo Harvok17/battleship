@@ -1,20 +1,30 @@
 import React from "react";
 import Test from "./Test";
-import styled from "styled-components";
+import { Container } from "./styled-components/appComponentStyles";
+import GlobalStyle from "./styled-components/globalStyle";
+import Header from "./Header";
+import Footer from "./Footer";
+import GameWindow from "./GameWindow";
+import { connect } from "react-redux";
 
-const Container = styled.div`
-  height: 100vh;
-`;
-
-const App = () => {
+const App = ({ screen }) => {
   return (
-    <div>
+    <Container>
+      <GlobalStyle />
+      <Header screen={screen} />
       <Test />
-    </div>
+      <Footer />
+    </Container>
   );
 };
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    screen: state.screen,
+  };
+};
+
+export default connect(mapStateToProps)(App);
 
 /*
 <Container>

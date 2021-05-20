@@ -47,7 +47,8 @@ describe("Test Gameboard functions", () => {
   });
 
   test("can check if the index was already taken", () => {
-    testGameboard.ships[0].locations = [12, 13, 14, 15, 16];
+    // testGameboard.ships[0].locations = [12, 13, 14, 15, 16];
+    testGameboard.manualShipLocations(12, shipTypes[0], "horizontal");
     expect(testGameboard.collision([12, 13, 14])).toBe(true);
   });
 
@@ -100,12 +101,6 @@ describe("Test Gameboard functions", () => {
     for (let i = 0; i < 2; i++) {
       testGameboard.receiveAttack(27 + i * 10);
     }
-
-    // const testShip = testGameboard.ships.find((ship) =>
-    //   ship.locations.includes(70)
-    // );
-
-    // console.log(testShip);
 
     expect(testGameboard.checkAllShipsSank()).toBe(true);
   });

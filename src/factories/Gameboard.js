@@ -6,9 +6,9 @@ class Gameboard {
     this.boardSize = 10;
     this.board = [];
     this.ships = [];
-    this._adjcentSquares = [];
+    this.adjcentSquares = [];
     this.leftEdge = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90];
-    this.rightEdge = [9, 19, 29, 39, 49, 59, 69, 79, 89];
+    this.rightEdge = [9, 19, 29, 39, 49, 59, 69, 79, 89, 99];
     this.shipsLeft = shipTypes.length;
     this.init();
   }
@@ -56,8 +56,7 @@ class Gameboard {
         ship.type,
         generated.direction
       );
-      ///////////////////
-      this._addAdjacentSquares(generated.locations, generated.direction);
+      this.addAdjacentSquares(generated.locations, generated.direction);
     });
   }
 
@@ -104,12 +103,8 @@ class Gameboard {
   }
 
   collision(locations) {
-    // return locations.some((loc) => {
-    //   return this.ships.some((ship) => ship.locations.includes(loc));
-    // });
-
     return locations.some((loc) => {
-      return this._adjcentSquares.includes(loc);
+      return this.adjcentSquares.includes(loc);
     });
   }
 
@@ -118,8 +113,7 @@ class Gameboard {
 
     this.addShipLocations(locations, ship.type);
     this.addShipLocationsOnBoard(locations, ship.type, direction);
-    //////////////
-    this._addAdjacentSquares(locations, direction);
+    this.addAdjacentSquares(locations, direction);
   }
 
   manualLocations(coord, ship, direction) {
@@ -168,7 +162,7 @@ class Gameboard {
     });
   }
 
-  _addAdjacentSquares(locations, direction) {
+  addAdjacentSquares(locations, direction) {
     const start = locations[0];
     const end = locations[locations.length - 1];
 
@@ -178,13 +172,11 @@ class Gameboard {
         : this.rightEdge.includes(end)
         ? [start - 1, ...locations]
         : [start - 1, ...locations, end + 1];
-
       const upperRow = shipRow.map((loc) => loc - 10);
       const lowerRow = shipRow.map((loc) => loc + 10);
-
       const allRows = shipRow.concat(upperRow).concat(lowerRow);
 
-      this._adjcentSquares = this._adjcentSquares.concat(allRows);
+      this.adjcentSquares = this.adjcentSquares.concat(allRows);
     }
 
     if (direction === "vertical") {
@@ -196,7 +188,8 @@ class Gameboard {
         ? []
         : shipColumn.map((loc) => loc + 1);
       const allColumns = shipColumn.concat(leftColumn).concat(rightColumn);
-      this._adjcentSquares = this._adjcentSquares.concat(allColumns);
+
+      this.adjcentSquares = this.adjcentSquares.concat(allColumns);
     }
   }
 }
