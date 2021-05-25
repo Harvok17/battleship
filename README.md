@@ -10,4 +10,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### Live DEMO:
 
-[CV Maker](https://harvok17.github.io/battleship/)
+[Battleship](https://harvok17.github.io/battleship/)
