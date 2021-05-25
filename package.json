@@ -1,6 +1,6 @@
 {
   "name": "battleship",
-  "homepage": "https://harvok17.github.io/battleship/",
+  "homepage": "https://harvok17.github.io/battleship",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
