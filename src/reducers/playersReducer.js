@@ -3,37 +3,46 @@ import {
   PLACE_SHIP,
   GENERATE_COMPUTER_SHIPS,
   FIRE_SHOT,
+  RESET_BOARD,
 } from "../actions/types";
 
 const playersReducer = (state = {}, action) => {
   const { type, payload } = action;
-  let newState;
 
   switch (type) {
     case INITIALIZE_PLAYERS:
       return { ...state, ...payload };
 
-    case PLACE_SHIP:
-      newState = { ...state };
+    case PLACE_SHIP: {
+      const newState = { ...state };
       newState.player1.gameBoard.manualShipLocations(
         payload.coord,
         payload.ship,
         payload.direction
       );
-      return newState;
+      return { ...newState };
+    }
 
-    case GENERATE_COMPUTER_SHIPS:
-      newState = { ...state };
+    case RESET_BOARD: {
+      const newState = { ...state };
+      newState.player1.gameBoard.resetBoard();
+      return { ...newState };
+    }
+
+    case GENERATE_COMPUTER_SHIPS: {
+      const newState = { ...state };
       newState.player2.gameBoard.generateShipLocations();
-      return newState;
+      return { ...newState };
+    }
 
-    case FIRE_SHOT:
-      newState = { ...state };
+    case FIRE_SHOT: {
+      const newState = { ...state };
       newState[payload.attacker].fire(
         payload.coord,
         newState[payload.receiver].gameBoard
       );
-      return newState;
+      return { ...newState };
+    }
 
     default:
       return state;

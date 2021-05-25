@@ -1,5 +1,4 @@
 import React from "react";
-import Test from "./Test";
 import { Container } from "./styled-components/appComponentStyles";
 import GlobalStyle from "./styled-components/globalStyle";
 import Header from "./Header";
@@ -12,7 +11,7 @@ const App = ({ screen }) => {
     <Container>
       <GlobalStyle />
       <Header screen={screen} />
-      <Test />
+      <GameWindow screen={screen} />
       <Footer />
     </Container>
   );
@@ -25,13 +24,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(App);
-
-/*
-<Container>
-  <Header>
-  <GameWindow>
-  <Footer>
-</Container>
-
-
-*/

@@ -47,7 +47,6 @@ describe("Test Gameboard functions", () => {
   });
 
   test("can check if the index was already taken", () => {
-    // testGameboard.ships[0].locations = [12, 13, 14, 15, 16];
     testGameboard.manualShipLocations(12, shipTypes[0], "horizontal");
     expect(testGameboard.collision([12, 13, 14])).toBe(true);
   });

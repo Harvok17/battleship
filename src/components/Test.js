@@ -5,6 +5,7 @@ import {
   generateComputerShips,
   fireShot,
   reset,
+  resetBoard,
   setup,
   gameStart,
   showResult,
@@ -16,7 +17,7 @@ import { useEffect, useState } from "react";
 import "./Test.css";
 import shipTypes from "../shipTypes";
 import { AiMove, AiReset } from "../ComputerAI";
-import {ScreenWrapper} from './styled-components/appComponentStyles'
+import { ScreenWrapper } from "./styled-components/appComponentStyles";
 
 function Test(props) {
   const [count, setCount] = useState(0);
@@ -30,6 +31,7 @@ function Test(props) {
     setTurn,
     turn,
     reset,
+    resetBoard,
     declareWinner,
     winner,
   } = props;
@@ -99,6 +101,14 @@ function Test(props) {
     setHovered([]);
   };
 
+  const handleResetBoard = () => {
+    if (screen !== "setup") return;
+    setCount(0);
+    resetBoard();
+  };
+
+  //////////////After Setup
+
   const handleAttack = (square) => {
     const { player1, player2 } = props.players;
 
@@ -152,18 +162,15 @@ function Test(props) {
       <tr>
         {player.gameBoard.board.slice(start, end).map((square) => (
           <td
-            style={
-              square.occupied
-                ? { backgroundColor: "royalblue" }
-                : { backgroundColor: "none" }
-            }
             className={`${square.shipPart || ""} ${
               hovered.includes(square.coord)
                 ? "square-hover"
                 : screen === "game" || screen === "result"
                 ? ""
                 : "not-allowed"
-            } ${square.isSunk ? "sunk" : ""}`}
+            } ${square.isSunk ? "sunk" : ""} ${
+              square.occupied ? "occupied" : ""
+            }`}
             key={square.coord}
             onClick={() => {
               handlePlaceShip(square.coord, shipTypes[count], direction);
@@ -256,6 +263,7 @@ function Test(props) {
     <ScreenWrapper>
       <button onClick={handleCreatePlayers}>Create Players</button>
       <button onClick={handleChangeDirection}>{direction}</button>
+      <button onClick={handleResetBoard}>Reset Board</button>
       {screen === "result" ? (
         <button onClick={handleReset}>Reset</button>
       ) : null}
@@ -300,6 +308,7 @@ export default connect(mapStateToProps, {
   generateComputerShips,
   fireShot,
   reset,
+  resetBoard,
   setup,
   gameStart,
   showResult,

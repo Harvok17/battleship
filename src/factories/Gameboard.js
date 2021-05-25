@@ -6,7 +6,7 @@ class Gameboard {
     this.boardSize = 10;
     this.board = [];
     this.ships = [];
-    this.adjcentSquares = [];
+    this.adjacentSquares = [];
     this.leftEdge = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90];
     this.rightEdge = [9, 19, 29, 39, 49, 59, 69, 79, 89, 99];
     this.shipsLeft = shipTypes.length;
@@ -25,6 +25,13 @@ class Gameboard {
         coord: i,
       });
     }
+  }
+
+  resetBoard() {
+    this.board = [];
+    this.ships = [];
+    this.adjacentSquares = [];
+    this.init();
   }
 
   receiveAttack(coord) {
@@ -104,7 +111,7 @@ class Gameboard {
 
   collision(locations) {
     return locations.some((loc) => {
-      return this.adjcentSquares.includes(loc);
+      return this.adjacentSquares.includes(loc);
     });
   }
 
@@ -176,7 +183,7 @@ class Gameboard {
       const lowerRow = shipRow.map((loc) => loc + 10);
       const allRows = shipRow.concat(upperRow).concat(lowerRow);
 
-      this.adjcentSquares = this.adjcentSquares.concat(allRows);
+      this.adjacentSquares = this.adjacentSquares.concat(allRows);
     }
 
     if (direction === "vertical") {
@@ -189,7 +196,7 @@ class Gameboard {
         : shipColumn.map((loc) => loc + 1);
       const allColumns = shipColumn.concat(leftColumn).concat(rightColumn);
 
-      this.adjcentSquares = this.adjcentSquares.concat(allColumns);
+      this.adjacentSquares = this.adjacentSquares.concat(allColumns);
     }
   }
 }

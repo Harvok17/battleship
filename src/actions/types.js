@@ -1,6 +1,7 @@
 export const INITIALIZE_PLAYERS = "INITIALIZE_PLAYERS";
 export const PLACE_SHIP = "PLACE_SHIP";
 export const GENERATE_COMPUTER_SHIPS = "GENERATE_COMPUTER_SHIPS";
+export const RESET_BOARD = "RESET_BOARD";
 export const FIRE_SHOT = "FIRE_SHOT";
 export const RESET = "RESET";
 export const SETUP = "SETUP";

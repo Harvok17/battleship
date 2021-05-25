@@ -1,10 +1,5 @@
-body {
-  text-align: center;
-}
-
 table {
   border-collapse: collapse;
-  margin: auto;
 }
 
 td {
@@ -150,6 +145,10 @@ td {
 }
 
 /*****/
+
+.occupied {
+  background-color: royalblue !important;
+}
 
 .square-hover {
   background-color: grey;

@@ -9,6 +9,7 @@ import {
   RESULT,
   TURN,
   WINNER,
+  RESET_BOARD,
 } from "./types";
 
 export const initializePlayers = (players) => {
@@ -22,6 +23,12 @@ export const placeShip = (details) => {
   return {
     type: PLACE_SHIP,
     payload: details,
+  };
+};
+
+export const resetBoard = () => {
+  return {
+    type: RESET_BOARD,
   };
 };
 
