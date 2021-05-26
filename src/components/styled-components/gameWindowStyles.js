@@ -11,8 +11,8 @@ export const Wrapper = styled.div`
 `;
 
 export const TitleResultWrapper = styled.div`
-  padding: 3em;
   margin-bottom: 100px;
+  line-height: 2;
 `;
 
 export const GridWrapper = styled.div`
@@ -94,7 +94,6 @@ export const GridContainer = styled.table`
 `;
 
 export const Square = styled.td`
-  user-select: none;
   height: 37px;
   width: 37px;
   border: 1px solid lightgrey;
@@ -263,6 +262,9 @@ export const HitMark = styled.div`
   color: red;
   animation: ${shrink} 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   @media (max-width: 500px) {
     animation: none;
@@ -273,6 +275,9 @@ export const MissMark = styled.div`
   color: grey;
   animation: ${shrink} 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   @media (max-width: 500px) {
     animation: none;

@@ -46,6 +46,7 @@ const StartEnd = ({
         onClick={() => {
           if (screen === "result") {
             handleReset();
+            handleCreatePlayers();
           } else {
             handleCreatePlayers();
           }

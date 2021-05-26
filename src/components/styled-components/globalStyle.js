@@ -10,6 +10,7 @@ const GlobalStyle = createGlobalStyle`
     body {
         background: black;
         color: white;
+        user-select: none;
     }
 `;
 
