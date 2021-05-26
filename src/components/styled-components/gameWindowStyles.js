@@ -1,6 +1,7 @@
 import styled, { keyframes } from "styled-components";
 
 export const Wrapper = styled.div`
+  text-align: center;
   font-family: "Press Start 2P", cursive;
   display: flex;
   flex-direction: column;
@@ -15,24 +16,35 @@ export const TitleResultWrapper = styled.div`
 `;
 
 export const GridWrapper = styled.div`
-  background: ${(props) => props.background};
+  background: ${({ background }) => background};
   height: 550px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  opacity: ${(props) => props.opacity};
+  opacity: ${({ opacity }) => opacity};
   transition: 0.7s;
+
+  @media (max-width: 500px) {
+    display: ${({ display }) => display};
+  }
 `;
 
 export const BattlefieldWrapper = styled.div`
+  position: relative;
   height: 100%;
-  width: 900px;
+  width: 920px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   text-align: center;
   line-height: 2;
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+  }
 `;
 
 const fadeUp = keyframes`
@@ -48,8 +60,12 @@ const fadeUp = keyframes`
 `;
 
 export const Text = styled.h1`
-  font-size: ${(props) => (props.small ? "2.5em" : "4em")};
+  font-size: ${({ small }) => (small ? "2.5em" : "4em")};
   animation: ${fadeUp} 1s ease;
+
+  @media (max-width: 500px) {
+    font-size: ${({ small }) => (small ? "1.5em" : "2em")};
+  }
 `;
 
 export const Button = styled.button`
@@ -78,9 +94,10 @@ export const GridContainer = styled.table`
 `;
 
 export const Square = styled.td`
-  height: 35px;
-  width: 35px;
-  border: 2px solid lightgrey;
+  user-select: none;
+  height: 37px;
+  width: 37px;
+  border: 1px solid lightgrey;
   cursor: pointer;
   background-color: ${(props) =>
     props.highlight
@@ -245,9 +262,28 @@ const shrink = keyframes`
 export const HitMark = styled.div`
   color: red;
   animation: ${shrink} 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  height: 100%;
+
+  @media (max-width: 500px) {
+    animation: none;
+  }
 `;
 
 export const MissMark = styled.div`
   color: grey;
   animation: ${shrink} 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  height: 100%;
+
+  @media (max-width: 500px) {
+    animation: none;
+  }
+`;
+
+export const Notifier = styled.span`
+  color: ${({ color }) => color};
+  @media (max-width: 500px) {
+    position: absolute;
+    display: ${({ display }) => display};
+    font-size: 2em;
+  }
 `;

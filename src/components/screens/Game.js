@@ -3,6 +3,7 @@ import {
   Wrapper,
   GridWrapper,
   BattlefieldWrapper,
+  Notifier,
 } from "../styled-components/gameWindowStyles";
 
 import { connect } from "react-redux";
@@ -86,14 +87,23 @@ const Game = ({
           background={
             turn === 0 || turn === 3 || turn === 4 ? "" : "hsl(0, 0%, 12.82%)"
           }
+          display={turn === 0 || turn === 3 || turn === 4 ? "none" : "flex"}
         >
           {player1.name} Ships
           <PlayerSquares player={player1} />
-          Ships Left:
-          {player1.gameBoard.shipsLeft}
+          Ships Left: {player1.gameBoard.shipsLeft}
         </GridWrapper>
 
-        <span>
+        <Notifier
+          display={!turn || turn === 1 ? "none" : "block"}
+          color={
+            !turn || turn === 1
+              ? "white"
+              : turn === 3 || turn === 5
+              ? "red"
+              : "limegreen"
+          }
+        >
           {!turn
             ? "Your turn"
             : turn === 1
@@ -101,18 +111,19 @@ const Game = ({
             : turn === 3 || turn === 5
             ? "Miss"
             : "Hit!"}
-        </span>
+        </Notifier>
 
         <GridWrapper
+          turn={turn}
           opacity={turn === 1 || turn === 5 || turn === 6 ? "0.5" : "1"}
           background={
             turn === 1 || turn === 5 || turn === 6 ? "" : "hsl(0, 0%, 12.82%)"
           }
+          display={turn === 1 || turn === 5 || turn === 6 ? "none" : "flex"}
         >
           {player2.name} Ships
           <EnemySquares player={player2} handleAttack={handleAttack} />
-          Ships Left:
-          {player2.gameBoard.shipsLeft}
+          Ships Left: {player2.gameBoard.shipsLeft}
         </GridWrapper>
       </BattlefieldWrapper>
     </Wrapper>
