@@ -16,6 +16,7 @@ describe("Test ship functions", () => {
 
   test("check ship properties", () => {
     expect(testCarrier).toEqual({
+      adjacentLocations: [],
       length: 5,
       locations: [70, 71, 72, 73, 74],
       type: "carrier",

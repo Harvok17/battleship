@@ -19,6 +19,14 @@ const shipTypes = [
     type: "destroyer",
     length: 2,
   },
+  {
+    type: "corvette-1",
+    length: 1,
+  },
+  {
+    type: "corvette-2",
+    length: 1,
+  },
 ];
 
 export default shipTypes;

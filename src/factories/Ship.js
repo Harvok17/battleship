@@ -2,6 +2,7 @@ class Ship {
   constructor({ type, length }) {
     this.length = length;
     this.locations = Array(length).fill(-1);
+    this.adjacentLocations = [];
     this.type = type;
     this.hits = [];
   }

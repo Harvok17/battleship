@@ -42,6 +42,10 @@ class Gameboard {
         currentSquare.shot = true;
         ship.hit(coord);
         if (ship.isSunk()) {
+          ship.adjacentLocations.forEach((loc) => {
+            const adjLoc = this.board.find((square) => square.coord === loc);
+            if (adjLoc && !adjLoc.shot) adjLoc.shot = true;
+          });
           this.setShipSankOnBoard(ship);
           this.shipsLeft--;
         }
@@ -63,7 +67,7 @@ class Gameboard {
         ship.type,
         generated.direction
       );
-      this.addAdjacentSquares(generated.locations, generated.direction);
+      this.addAdjacentSquares(generated.locations, generated.direction, ship);
     });
   }
 
@@ -117,10 +121,11 @@ class Gameboard {
 
   manualShipLocations(coord, ship, direction) {
     const locations = this.manualLocations(coord, ship, direction);
+    const currentShip = this.ships.find((s) => s.type === ship.type);
 
-    this.addShipLocations(locations, ship.type);
+    currentShip.locations = locations;
     this.addShipLocationsOnBoard(locations, ship.type, direction);
-    this.addAdjacentSquares(locations, direction);
+    this.addAdjacentSquares(locations, direction, currentShip);
   }
 
   manualLocations(coord, ship, direction) {
@@ -131,11 +136,6 @@ class Gameboard {
         : shipLocationArray.push(coord + i * 10);
     }
     return shipLocationArray;
-  }
-
-  addShipLocations(locations, type) {
-    const currentShip = this.ships.find((ship) => ship.type === type);
-    currentShip.locations = locations;
   }
 
   addShipLocationsOnBoard(locations, shipType, direction) {
@@ -169,7 +169,7 @@ class Gameboard {
     });
   }
 
-  addAdjacentSquares(locations, direction) {
+  addAdjacentSquares(locations, direction, ship) {
     const start = locations[0];
     const end = locations[locations.length - 1];
 
@@ -183,6 +183,7 @@ class Gameboard {
       const lowerRow = shipRow.map((loc) => loc + 10);
       const allRows = shipRow.concat(upperRow).concat(lowerRow);
 
+      ship.adjacentLocations = allRows;
       this.adjacentSquares = this.adjacentSquares.concat(allRows);
     }
 
@@ -196,6 +197,7 @@ class Gameboard {
         : shipColumn.map((loc) => loc + 1);
       const allColumns = shipColumn.concat(leftColumn).concat(rightColumn);
 
+      ship.adjacentLocations = allColumns;
       this.adjacentSquares = this.adjacentSquares.concat(allColumns);
     }
   }

@@ -101,6 +101,6 @@ describe("Test Gameboard functions", () => {
       testGameboard.receiveAttack(27 + i * 10);
     }
 
-    expect(testGameboard.checkAllShipsSank()).toBe(true);
+    expect(testGameboard.checkAllShipsSank()).toBe(false);
   });
 });

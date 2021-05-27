@@ -26,7 +26,7 @@ const Setup = ({ player1, placeShip, resetBoard, gameStart }) => {
   };
 
   const handlePlaceShip = (coord, gameBoard) => {
-    if (count > 4) return;
+    if (count === shipTypes.length) return;
 
     const locations = gameBoard.manualLocations(
       coord,
@@ -42,7 +42,7 @@ const Setup = ({ player1, placeShip, resetBoard, gameStart }) => {
   };
 
   const handleMouseEnter = (coord, gameBoard) => {
-    if (count > 4) return;
+    if (count === shipTypes.length) return;
     const shipLength = shipTypes[count].length;
     const locations = [];
     for (let i = 0; i < shipLength; i++) {
@@ -75,7 +75,7 @@ const Setup = ({ player1, placeShip, resetBoard, gameStart }) => {
   return (
     <Wrapper>
       <GridWrapper>
-        {count > 4 ? "All ships are set!" : "Place your ships"}
+        {count === shipTypes.length ? "All ships are set!" : "Place your ships"}
         <Button mini onClick={handleChangeDirection}>
           {direction}
         </Button>
@@ -86,7 +86,7 @@ const Setup = ({ player1, placeShip, resetBoard, gameStart }) => {
           handleMouseEnter={handleMouseEnter}
           handleMouseLeave={handleMouseLeave}
         />
-        {count > 4 ? (
+        {count === shipTypes.length ? (
           <ButtonsWrapper>
             <Button mini onClick={handleStartGame}>
               Play
