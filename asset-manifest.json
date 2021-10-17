@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.js": "/battleship/static/js/main.0e307d75.chunk.js",
-    "main.js.map": "/battleship/static/js/main.0e307d75.chunk.js.map",
+    "main.js": "/battleship/static/js/main.64df57e7.chunk.js",
+    "main.js.map": "/battleship/static/js/main.64df57e7.chunk.js.map",
     "runtime-main.js": "/battleship/static/js/runtime-main.a886aa47.js",
     "runtime-main.js.map": "/battleship/static/js/runtime-main.a886aa47.js.map",
-    "static/js/2.5c77a41c.chunk.js": "/battleship/static/js/2.5c77a41c.chunk.js",
-    "static/js/2.5c77a41c.chunk.js.map": "/battleship/static/js/2.5c77a41c.chunk.js.map",
+    "static/js/2.7ac97f9c.chunk.js": "/battleship/static/js/2.7ac97f9c.chunk.js",
+    "static/js/2.7ac97f9c.chunk.js.map": "/battleship/static/js/2.7ac97f9c.chunk.js.map",
     "index.html": "/battleship/index.html",
-    "static/js/2.5c77a41c.chunk.js.LICENSE.txt": "/battleship/static/js/2.5c77a41c.chunk.js.LICENSE.txt",
+    "static/js/2.7ac97f9c.chunk.js.LICENSE.txt": "/battleship/static/js/2.7ac97f9c.chunk.js.LICENSE.txt",
     "static/media/github.04be58c1.svg": "/battleship/static/media/github.04be58c1.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.a886aa47.js",
-    "static/js/2.5c77a41c.chunk.js",
-    "static/js/main.0e307d75.chunk.js"
+    "static/js/2.7ac97f9c.chunk.js",
+    "static/js/main.64df57e7.chunk.js"
   ]
 }
