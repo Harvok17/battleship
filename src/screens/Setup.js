@@ -4,13 +4,12 @@ import {
   GridWrapper,
   Button,
   ButtonsWrapper,
-} from "../styled-components/gameWindowStyles";
-import { placeShip, resetBoard, gameStart } from "../../actions";
+} from "../components/styled-components/gameWindowStyles";
+import { placeShip, resetBoard, gameStart } from "../actions";
 import { connect } from "react-redux";
 
-import shipTypes from "../../shipTypes";
-
-import SetupSquares from "../boards/SetupSquares";
+import shipTypes from "../shipTypes";
+import { SetupSquares } from "../components";
 
 const Setup = ({ player1, placeShip, resetBoard, gameStart }) => {
   const [count, setCount] = useState(0);

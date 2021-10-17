@@ -1,6 +1,6 @@
 import React from "react";
 import { Square } from "../styled-components/gameWindowStyles";
-import Grid from "./Grid";
+import Grid from "../Grid/Grid";
 
 const SetupSquares = ({
   start,

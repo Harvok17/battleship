@@ -4,20 +4,18 @@ import {
   MissMark,
   Square,
 } from "../styled-components/gameWindowStyles";
-import Grid from "./Grid";
+import Grid from "../Grid/Grid";
 
-const EnemySquares = ({ start, end, player, handleAttack }) => {
-  return (
-    <tr>
-      {player.gameBoard.board.slice(start, end).map((square) => (
+const PlayerSquares = ({ start, end, player }) => (
+  <tr>
+    {player.gameBoard.board.slice(start, end).map((square) => {
+      return (
         <Square
           key={square.coord}
-          className={square.isSunk && square.shipPart}
+          occupied={square.occupied}
+          className={square.shipPart}
           sunk={square.isSunk}
-          enemy
-          onClick={() => {
-            handleAttack(square);
-          }}
+          player
         >
           {!square.occupied && square.shot ? (
             <MissMark>{"\u2715"}</MissMark>
@@ -25,9 +23,9 @@ const EnemySquares = ({ start, end, player, handleAttack }) => {
             <HitMark>{"\u274C"}</HitMark>
           ) : null}
         </Square>
-      ))}
-    </tr>
-  );
-};
+      );
+    })}
+  </tr>
+);
 
-export default Grid(EnemySquares);
+export default Grid(PlayerSquares);

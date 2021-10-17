@@ -1,5 +1,5 @@
 import React from "react";
-import { HeaderWrapper } from "./styled-components/appComponentStyles";
+import { HeaderWrapper } from "../styled-components/appComponentStyles";
 
 const Header = ({ screen }) => {
   return (

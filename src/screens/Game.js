@@ -4,14 +4,14 @@ import {
   GridWrapper,
   BattlefieldWrapper,
   Notifier,
-} from "../styled-components/gameWindowStyles";
+} from "../components/styled-components/gameWindowStyles";
 
 import { connect } from "react-redux";
 
-import { fireShot, setTurn, showResult, declareWinner } from "../../actions";
-import PlayerSquares from "../boards/PlayerSquares";
-import EnemySquares from "../boards/EnemySquares";
-import { AiMove } from "../../ComputerAI";
+import { fireShot, setTurn, showResult, declareWinner } from "../actions";
+
+import { AiMove } from "../ComputerAI";
+import { PlayerSquares, EnemySquares } from "../components";
 
 const Game = ({
   player1,

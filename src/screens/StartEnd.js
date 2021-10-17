@@ -1,19 +1,19 @@
 import React from "react";
-import Player from "../../factories/Player";
-import {
-  Wrapper,
-  TitleResultWrapper,
-  Text,
-  Button,
-} from "../styled-components/gameWindowStyles";
+import Player from "../factories/Player";
 import { connect } from "react-redux";
 import {
   initializePlayers,
   generateComputerShips,
   setup,
   reset,
-} from "../../actions";
-import { AiReset } from "../../ComputerAI";
+} from "../actions";
+import {
+  Wrapper,
+  TitleResultWrapper,
+  Text,
+  Button,
+} from "../components/styled-components/gameWindowStyles";
+import { AiReset } from "../ComputerAI";
 
 const StartEnd = ({
   screen,

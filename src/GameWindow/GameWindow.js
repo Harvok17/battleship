@@ -1,8 +1,8 @@
 import React from "react";
-import { ScreenWrapper } from "./styled-components/appComponentStyles";
-import StartEnd from "./screens/StartEnd";
-import Setup from "./screens/Setup";
-import Game from "./screens/Game";
+import { ScreenWrapper } from "../components/styled-components/appComponentStyles";
+import StartEnd from "../screens/StartEnd";
+import Setup from "../screens/Setup";
+import Game from "../screens/Game";
 
 const GameWindow = ({ screen }) => {
   const renderScreen = () =>

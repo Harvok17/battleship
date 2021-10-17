@@ -99,18 +99,16 @@ export const Square = styled.td`
   border: 1px solid lightgrey;
   cursor: pointer;
   background-color: ${(props) =>
-    props.highlight
+    props.highlight || props.sunk
       ? "lightgrey"
       : props.occupied && !props.sunk
       ? "royalblue"
-      : props.sunk
-      ? "lightgrey !important"
       : ""};
 
   &:hover {
     cursor: ${(props) => (props.highlight || props.enemy ? "" : "not-allowed")};
     background-color: ${(props) =>
-      props.highlight || props.player || props.occupied
+      props.highlight || props.player || props.occupied || props.sunk
         ? ""
         : props.enemy
         ? "lightgreen"

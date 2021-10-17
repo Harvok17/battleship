@@ -1,6 +1,6 @@
 import React from "react";
-import { FooterWrapper } from "./styled-components/appComponentStyles";
-import { ReactComponent as Logo } from "../assets/github.svg";
+import { FooterWrapper } from "../styled-components/appComponentStyles";
+import { ReactComponent as Logo } from "../../assets/github.svg";
 
 const Footer = () => {
   return (
